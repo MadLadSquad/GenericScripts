@@ -1,0 +1,21 @@
+name: Update-Fork
+
+# Run this every 1st day of the month at 09:00AM
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron:  "9 0 1 * *"
+
+jobs:
+  Linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+          with:
+            lfs: true
+      - uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.MACHINE_USER_PAT }}
+          push-to-fork: Madman10K/GenericScripts
