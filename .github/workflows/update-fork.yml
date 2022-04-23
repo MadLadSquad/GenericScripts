@@ -14,7 +14,7 @@ jobs:
       - name: extract git commit data
         uses: rlespinasse/git-commit-data-action@v1.x
       - name: Update fork
-        run: git remote add upstream https://github.com/MadLadSquad/GenericScripts.git && git fetch upstream && git rebase upstream/master
+        run: git remote add upstream https://github.com/MadLadSquad/GenericScripts.git && git fetch upstream && git checkout origin/master && git rebase upstream/master
       - name: Raise PR
         uses: peter-evans/create-pull-request@v3
         with:
