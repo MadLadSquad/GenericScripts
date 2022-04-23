@@ -1,21 +1,31 @@
-name: Update-Fork
-
-# Run this every 1st day of the month at 09:00AM
+name: Create automatic pr
+# Set your repository name and the branch you want to pull from
+env:
+  REPO_NAME: "MadLadSquad/GenericScripts"
+  BRANCH: "master"
+  
 on:
-  push:
-    branches: [main]
   schedule:
-    - cron:  "9 0 1 * *"
+    - cron:  "0 0 * * *"
 
 jobs:
-  Linux:
+  Update-Fork:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository code
+      - name: checking out code
         uses: actions/checkout@v2
-          with:
-            lfs: true
-      - uses: peter-evans/create-pull-request@v3
+      - name: extract git commit data
+        uses: rlespinasse/git-commit-data-action@v1.x
+      - name: Update data
+        run: git clone https://github.com/${{ env.REPO_NAME }}.git --recursive -b ${{ env.BRANCH }} && cp -r GenericScripts/* . && rm -rf GenericScripts
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v4
         with:
-          token: ${{ secrets.MACHINE_USER_PAT }}
-          push-to-fork: Madman10K/GenericScripts
+          branch: "auto"
+          base: "master"
+          title: "Daily update PR"
+          committer: ${{ env.GIT_COMMIT_AUTHOR_NAME }} <${{ env.GIT_COMMIT_AUTHOR_EMAIL }}">
+          author: ${{ env.GIT_COMMIT_AUTHOR_NAME }} <${{ env.GIT_COMMIT_AUTHOR_EMAIL }}">
+          body: "Daily PR to update your dependencies"
+          token: ${{ secrets.GITHUB_TOKEN }}
+          delete-branch: true
