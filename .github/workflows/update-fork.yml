@@ -16,9 +16,9 @@ jobs:
         uses: rlespinasse/git-commit-data-action@v1.x
 
       - name: Update fork
-        run: git remote add upstream https://github.com/MadLadSquad/GenericScripts.git && git fetch upstream && git checkout -b pr && git rebase upstream/master
+        run: git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com" && git config --global user.name "Github Actions" && git remote add upstream https://github.com/MadLadSquad/GenericScripts.git && git fetch upstream && git checkout -b pr && git rebase upstream/master
       - name: Update author information
-        run: echo ${{ env.GIT_COMMIT_AUTHOR_NAME }} > AUTHOR
+        run: echo ${{ env.GNAME }} > AUTHOR
 
       - name: Raise PR
         uses: peter-evans/create-pull-request@v3
