@@ -3,6 +3,7 @@ name: Create automatic pr
 env:
   REPO_NAME: "MadLadSquad/GenericScripts"
   BRANCH: "master"
+  NAME: "GenericScripts"
   
 on:
   schedule:
@@ -17,7 +18,7 @@ jobs:
       - name: extract git commit data
         uses: rlespinasse/git-commit-data-action@v1.x
       - name: Update data
-        run: git clone https://github.com/${{ env.REPO_NAME }}.git --recursive -b ${{ env.BRANCH }} && cp -r GenericScripts/* . && rm -rf GenericScripts
+        run: git clone https://github.com/${{ env.REPO_NAME }}.git --recursive -b ${{ env.BRANCH }} && cp -r ${{ env.NAME }}/* . && rm -rf ${{ env.NAME }}
       - name: Create PR
         uses: peter-evans/create-pull-request@v4
         with:
