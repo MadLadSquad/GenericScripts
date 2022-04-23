@@ -6,20 +6,15 @@ on:
       - master
 
 jobs:
-  updateAuthor:
+  Update-Fork:
     runs-on: ubuntu-latest
     steps:
       - name: checking out code
         uses: actions/checkout@v2
-
       - name: extract git commit data
         uses: rlespinasse/git-commit-data-action@v1.x
-
       - name: Update fork
-        run: git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com" && git config --global user.name "Github Actions" && git remote add upstream https://github.com/MadLadSquad/GenericScripts.git && git fetch upstream && git checkout -b pr && git rebase upstream/master
-      - name: Update author information
-        run: echo ${{ env.GNAME }} > AUTHOR
-
+        run: git remote add upstream https://github.com/MadLadSquad/GenericScripts.git && git fetch upstream && git rebase upstream/master
       - name: Raise PR
         uses: peter-evans/create-pull-request@v3
         with:
