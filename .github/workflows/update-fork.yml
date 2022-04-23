@@ -14,7 +14,7 @@ jobs:
       - name: extract git commit data
         uses: rlespinasse/git-commit-data-action@v1.x
       - name: Update fork
-        run: git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com" && git config --local user.name "github-actions" && git remote add upstream https://github.com/MadLadSquad/GenericScripts.git && git fetch upstream && git checkout -b origin/pr upstream/master && git push origin pr
+        run: git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com" && git config --local user.name "github-actions" && git remote add upstream https://github.com/MadLadSquad/GenericScripts.git && git fetch upstream && git checkout -b origin/pr upstream/master && git add . && git commit -m "init" && git push origin pr
       - name: Raise PR
         uses: peter-evans/create-pull-request@v3
         with:
