@@ -15,13 +15,15 @@ jobs:
       - name: extract git commit data
         uses: rlespinasse/git-commit-data-action@v1.x
 
+      - name: Update fork
+        run: git remote add upstream https://github.com/MadLadSquad/GenericScripts.git && git fetch upstream && git checkout -b pr && git rebase upstream/master
       - name: Update author information
         run: echo ${{ env.GIT_COMMIT_AUTHOR_NAME }} > AUTHOR
 
       - name: Raise PR
         uses: peter-evans/create-pull-request@v3
         with:
-          branch: "auto-pr-branch"
+          branch: "pr"
           base: master
           title: "Automatic PR"
           committer: ${{ env.GIT_COMMIT_AUTHOR_NAME }} <${{ env.GIT_COMMIT_AUTHOR_EMAIL }}">
