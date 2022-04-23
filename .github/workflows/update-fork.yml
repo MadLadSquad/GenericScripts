@@ -25,4 +25,4 @@ jobs:
           author: ${{ env.GIT_COMMIT_AUTHOR_NAME }} <${{ env.GIT_COMMIT_AUTHOR_EMAIL }}">
           body: Automatic PR
           token: ${{ secrets.GITHUB_TOKEN }}
-          delete-branch: true
+          delete-branch: false
