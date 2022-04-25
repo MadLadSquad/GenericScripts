@@ -36,7 +36,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           filename: .github/auto-issue-template.md
-          assignees: Madman10K
-          milestone: 1
           update_existing: true
           search_existing: all
