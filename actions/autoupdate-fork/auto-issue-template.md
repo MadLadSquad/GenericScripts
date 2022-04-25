@@ -1,7 +1,7 @@
 ---
 title: Daily automatic dependency update issue!
-assignees: MadLadSquad/dependencies
+assignees: Madman10K
 labels: enhancement
 ---
-Automatic issue for updating this fork to latest!
+Automatic issue for updating this fork to latest! @MadLadSquad/dependencies
 
