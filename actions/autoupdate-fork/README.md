@@ -1,0 +1,1 @@
+This github action runs every day on a fork, when the fork is behind the origin, it creates an issue pinging a certain person or group. The title, content, labels and assignees of the issue are listed in the `auto-issue-template.md` file which you should place under your `.github/` directory!
