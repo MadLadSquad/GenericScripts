@@ -1,0 +1,41 @@
+name: Create automatic pr
+# Set your repository name and the branch you want to pull from
+env:
+  REPO_NAME: "MadLadSquad/GenericScripts"
+  BRANCH: "master"
+  UPSTREAM_BRANCH: "master"
+  NAME: "GenericScripts"
+  
+on:
+  schedule:
+    - cron:  "0 0 * * *"
+
+jobs:
+  Update-Fork:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checking out code
+        uses: actions/checkout@v2
+      - name: extract git commit data
+        uses: rlespinasse/git-commit-data-action@v1.x
+      - name: Sync upstream changes
+        id: sync
+        uses: aormsby/Fork-Sync-With-Upstream-action@v3.2
+        with:
+          target_sync_branch: ${{ env.BRANCH }}
+          target_repo_token: ${{ secrets.GITHUB_TOKEN }}
+          upstream_sync_branch: ${{ env.UPSTREAM_BRANCH }}
+          upstream_sync_repo: ${{ env.REPO_NAME }}
+          upstream_repo_access_token: ${{ secrets.UPSTREAM_REPO_SECRET }}
+          test_mode: true
+      - name: Create PR
+        if: steps.sync.outputs.has_new_commits == 'true'
+        uses: JasonEtco/create-an-issue@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          filename: .github/auto-issue-template.md
+          assignees: Madman10K
+          milestone: 1
+          update_existing: true
+          search_existing: all
