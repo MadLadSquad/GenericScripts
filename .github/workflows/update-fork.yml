@@ -27,7 +27,7 @@ jobs:
           upstream_sync_branch: ${{ env.UPSTREAM_BRANCH }}
           upstream_sync_repo: ${{ env.REPO_NAME }}
           upstream_repo_access_token: ${{ secrets.UPSTREAM_REPO_SECRET }}
-          test_mode: false
+          test_mode: true
       - name: Create PR
         if: steps.sync.outputs.has_new_commits == 'true'
         uses: JasonEtco/create-an-issue@v2
