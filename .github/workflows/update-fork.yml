@@ -7,8 +7,8 @@ env:
   NAME: "GenericScripts"
   
 on:
-  schedule:
-    - cron:  "0 0 * * *"
+  push:
+   branches: master
 
 jobs:
   Update-Fork:
@@ -18,24 +18,23 @@ jobs:
         uses: actions/checkout@v2
       - name: extract git commit data
         uses: rlespinasse/git-commit-data-action@v1.x
-      - name: Sync upstream changes
-        id: sync
-        uses: aormsby/Fork-Sync-With-Upstream-action@v3.2
-        with:
-          target_sync_branch: ${{ env.BRANCH }}
-          target_repo_token: ${{ secrets.GITHUB_TOKEN }}
-          upstream_sync_branch: ${{ env.UPSTREAM_BRANCH }}
-          upstream_sync_repo: ${{ env.REPO_NAME }}
-          upstream_repo_access_token: ${{ secrets.UPSTREAM_REPO_SECRET }}
-          test_mode: true
-      - name: Create PR
-        if: steps.sync.outputs.has_new_commits == 'true'
+      - name: Check if branches are different
+        shell: bash
+        id: check
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git remote add upstream https://github.com/${{ env.REPO_NAME }}.git
+          git fetch
+          git fetch upstream
+          ahead=$(git rev-list --count origin/${{ env.BRANCH }}..upstream/${{ env.UPSTREAM_BRANCH }})
+          echo "::set-output name=ahead::${ahead}"
+      - name: Issue
+        if: steps.check.outputs.ahead != '0'
         uses: JasonEtco/create-an-issue@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           filename: .github/auto-issue-template.md
-          assignees: Madman10K
-          milestone: 1
           update_existing: true
           search_existing: all
