@@ -15,19 +15,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checking out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        with:
+          ref: master
+          token: ${{ secrets.GITHUB_TOKEN }}
+          lfs: true
+          submodules: true
+          clean: false
+          fetch-depth: 0
       - name: extract git commit data
         uses: rlespinasse/git-commit-data-action@v1.x
-      - name: Check if branches are different
-        shell: bash
+      - name: Check for synced branches action
         id: check
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git remote add upstream https://github.com/${{ env.REPO_NAME }}.git
-          git fetch
-          git fetch upstream
-          echo "::set-output name=ahead::$(git rev-list --count origin/${{ env.BRANCH }}..upstream/${{ env.UPSTREAM_BRANCH }})\n"
+        uses: MadLadSquad/check-for-synced-branches-action@master
+        with:
+          upstream-url: "https://github.com/${{ env.REPO_NAME }}"
+          first-branch: ${{ env.BRANCH }}
+          second-branch: ${{ env.UPSTREAM_BRANCH }}
       - name: Issue
         if: steps.check.outputs.ahead > 0
         uses: JasonEtco/create-an-issue@v2
