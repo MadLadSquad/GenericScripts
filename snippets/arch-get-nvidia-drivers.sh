@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # This was written for the UntitledLinuxGameManager, with the intention to get the latest nvidia driver version to install then lock it in Pacman! 
 
 sed -i '/^#\[multilib\]$/ {N; s/#\[multilib\]\n#Include = \/etc\/pacman.d\/mirrorlist/\[multilib\]\nInclude = \/etc\/pacman.d\/mirrorlist/g}' /etc/pacman.conf
